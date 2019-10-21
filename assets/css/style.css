@@ -1,12 +1,21 @@
 body {
+    font-family: 'Concert One', cursive;
     font-size:40px;
     font-weight:bold;
     text-align: center;
+   background-color:#001628;
+    background-size: fill;
+    background-repeat: no-repeat;
 }
 .container{
+    font-weight: 100;
     margin-left:auto;
     margin-right:auto;
-    width:960px;
+    color:white;
+}
+.enterGame h1{
+    padding-top:15px;
+    padding-bottom:15px;
 }
 .enterGame{
     margin-top:20px;
@@ -26,4 +35,65 @@ button{
     padding-bottom:30px;
     display:flex;
     justify-content: space-around;
+    align-content: center;
+}
+#title{
+    color:#001628;
+    background-color:white;
+    padding-bottom:50px;
+    padding-top:50px;
+    margin-left:auto;
+    margin-right:auto;
+    text-align: center;
+}
+button{
+    cursor: pointer;
+    width: 120px;
+    height: 120px;
+    background-color:#0197AB;
+    color:white;
+    text-decoration: none;		
+    text-align: center;
+    font-family: 'Concert One', cursive;;
+    font-size:25px;		
+    box-shadow: 2px 2px 7px rgba(0,0,0,.2);
+    border-radius: 300px;
+    z-index: 1;
+    border-width: 4px;
+    border-style: solid;
+}
+button:hover{
+    background-color:#0197ab86;
+}
+.vs{
+    padding-top:12px;
+}
+.fineprint{
+    border:2px solid white;
+    border-radius: 15px 50px;
+    margin:auto;
+    padding-top:10px;
+    padding-bottom:10px;
+    width:50%;
+    background-color:#0197ab86;
+    margin-top:100px;
+    margin-bottom:25px;
+}
+.winner{
+    margin-top:20px;
+}
+.choice{
+    margin-bottom:20px;
+}
+.youChose {
+    padding-top:20px;
+}
+#nameInput{
+    margin:auto;
+    height:25px;
+    font-size:20px;
+    font-family: 'Concert One', cursive;;
+    margin-top:10px;
+    margin-bottom:25px;
+    width:25%;
 }

@@ -23,7 +23,7 @@ var move = '';
 var msg = '';
 var name = '';
 var state = '';
-var points = 0;
+
 var start_game = false;
 // var currentUserInfo = database.ref(`/users/${currentUserID}`);
 function getPlayerID(){
@@ -52,8 +52,7 @@ function updatePlayer(player){
         move: move,
         msg: msg,
         name: name,
-        state: state,
-        points:points
+        state: state
     }
     var updates = {}   
     if(player === 'player1'){
@@ -77,8 +76,7 @@ function resetPlayers(player){
         move: "",
         msg: "",
         name: "",
-        state: "",
-        points: 0
+        state: ""
     }
     playerObj2 = {
         active: false,
@@ -86,9 +84,8 @@ function resetPlayers(player){
         move: "",
         msg: "",
         name: "",
-        state: "",
-        points:0
-    }
+        state: ""
+        }
     var updates = {}   
     if(player === 'player1'){
         updates['/users/player1'] = playerObj1;
@@ -124,25 +121,26 @@ function gameIsFull(name){
 
 //directs user to gamepage
 function gameDisplay(){
-    var displayBoard = (`<div class='board'>
-                            <div class='player1'>
-                                <h1>Player 1</h1>
-                                <div class='player1Choice'></div>
-                            </div>
-                            <div class='vs'>VS</div>
-                            <div calss='player2'>
-                                <h1>Player 2</h1>
-                                <div class='player2Choice'></div>
-                            </div>
-                        </div>`);
-    var playerSelection = (`<div class='playerSelection'>
-                            </div>
-                            <div class='youChose'></div>
-                            <div class='fineprint'>You are ${currentUserID}</div>`)
+        var displayBoard = (`<div class='board'>
+                                <div class='player1'>
+                                    <h1>Player 1</h1>
+                                    <div class='player1Choice'></div>
+                                </div>
+                                <div class='vs'>VS</div>
+                                <div calss='player2'>
+                                    <h1>Player 2</h1>
+                                    <div class='player2Choice'></div>
+                                </div>
+                            </div>`);
+        var playerSelection = (`<div class='playerSelection'>
+        </div>
+        <div class='youChose'></div>
+        <div class='fineprint'>${name} you are ${currentUserID}</div>`)
 
-    var rdyButton = (`<button class='rdy'>Ready Up!</button>`);
-    $('.enterGame').empty();
-    $('.enterGame').append(displayBoard, playerSelection, rdyButton);
+        var rdyButton = (`<button class='rdy'>Ready Up!</button>`);
+        $('.enterGame').empty();
+        $('.enterGame').append(displayBoard, rdyButton, playerSelection);
+
 }
 
 //simulates game
@@ -268,14 +266,16 @@ $(document).on('click','.tryAgain',function(){
 
 //changes players state to rdy if both r rdy games starts
 $(document).on('click','.rdy', function(){
-    console.log('rdy clicked');
     state = 'ready';
     $('.rdy').text('You are Ready!');
     updatePlayer(currentUserID);
     userRef.on('value',snap =>{
         if (snap.val().player1.state === 'ready' && snap.val().player2.state === 'ready'){
+            $('.player1Choice').text('');
+            $('.player2Choice').text('');
+            $('.winner').text('');
             if(start_game === false){
-                startGame();
+                startGame(3);
                 start_game = true;
             }
         }
@@ -292,25 +292,19 @@ $(document).on('click','.choice',function(){
 })
 
 //resets database
-$('.reset').on('click',function(){
-    resetPlayers('player1');
-    resetPlayers('player2');
-})
-
+// $('.reset').on('click',function(){
+//     resetPlayers('player1');
+//     resetPlayers('player2');
+// })
 
 
 userRef.on('value', snap => {
-
 })
 
-// database.ref().on('value', snap =>{
-//     if(isLobbyFull()){
-//         console.log('lobby is full')
-//     } else {
-//         console.log('waiting on players to join');
-//     }
-// })
 database.ref().on('value',snap =>{
-
-
 })
+//resets user
+
+window.addEventListener("beforeunload", function(e){
+    resetPlayers(currentUserID);
+ }, false);

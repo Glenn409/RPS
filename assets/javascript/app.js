@@ -23,6 +23,7 @@ var move = '';
 var msg = '';
 var name = '';
 var state = '';
+var points = 0;
 var start_game = false;
 // var currentUserInfo = database.ref(`/users/${currentUserID}`);
 function getPlayerID(){
@@ -45,16 +46,15 @@ function enterName(){
 }
 //function to create/update a player;
 function updatePlayer(player){
-    console.log(player);
     playerObj = {
         active: true,
         id: currentUserID,
         move: move,
         msg: msg,
         name: name,
-        state: state
+        state: state,
+        points:points
     }
-    console.log(playerObj);
     var updates = {}   
     if(player === 'player1'){
         updates['/users/player1'] = playerObj;
@@ -77,7 +77,8 @@ function resetPlayers(player){
         move: "",
         msg: "",
         name: "",
-        state: ""
+        state: "",
+        points: 0
     }
     playerObj2 = {
         active: false,
@@ -85,7 +86,8 @@ function resetPlayers(player){
         move: "",
         msg: "",
         name: "",
-        state: ""
+        state: "",
+        points:0
     }
     var updates = {}   
     if(player === 'player1'){
@@ -122,31 +124,118 @@ function gameIsFull(name){
 
 //directs user to gamepage
 function gameDisplay(){
-    var displayBoard = (`<div class=timer>timer Here></ 1div>
-                        <div class='board'>
-                            <div class='player1'>Player 2</div>
+    var displayBoard = (`<div class='board'>
+                            <div class='player1'>
+                                <h1>Player 1</h1>
+                                <div class='player1Choice'></div>
+                            </div>
                             <div class='vs'>VS</div>
-                            <div calss='player2'>Player 2</div>
+                            <div calss='player2'>
+                                <h1>Player 2</h1>
+                                <div class='player2Choice'></div>
+                            </div>
                         </div>`);
-
     var playerSelection = (`<div class='playerSelection'>
                             </div>
-                            <div>${name} you are ${currentUserID}.</div>`)
+                            <div class='youChose'></div>
+                            <div class='fineprint'>You are ${currentUserID}</div>`)
 
     var rdyButton = (`<button class='rdy'>Ready Up!</button>`);
     $('.enterGame').empty();
     $('.enterGame').append(displayBoard, playerSelection, rdyButton);
 }
+
+//simulates game
+function rps(input1,input2){
+    if (input1 === input2) {
+        return 'draw'
+    }
+    if (input1 === "rock") {
+        if (input2 === "scissors"){
+            return "rock";
+        } else {
+            return "paper";
+        }
+    }
+    if (input1 === "paper") {
+        if (input2 === "rock") {
+            return "paper";
+        } else {
+    
+            return "scissors";
+        }
+    }
+    if (input1 === "scissors") {
+        if (input2 === "rock"){
+            return 'rock';
+        } else {
+    
+            return "scissors";
+        }
+    }
+}
+
+//timer function if i decided to add one
+// function myTimer(timer){
+//     console.log('timer');
+//     var remaining_time = timer;
+//     timerControl = setInterval(function(){
+//         if(remaining_time > 0){
+//             remaining_time--;
+//             $('.timer').text(remaining_time);
+//             console.log(remaining_time);
+//         } else {
+//             console.log('interval cleared')
+//             clearInterval(timerControl);
+//         }
+//     },1000);
+// };
+
+function displayResult(result){
+    userRef.once('value', snap =>{
+        $('.player1Choice').text(snap.val().player1.move);
+        $('.player2Choice').text(snap.val().player2.move);
+        if(result === 'draw'){
+            $('.winner').append('<div>Match was a Draw!</div>');
+        } else if(snap.val().player1.move === result){
+           if(currentUserID === 'player1'){
+           }
+            $('.winner').text(`Player 1 Wins!`)
+        } else {
+            if(currentUserID === 'player2'){
+            }
+            $('.winner').text(`Player 2 Wins!`)
+        }
+        state = 'notready';
+        updatePlayer(currentUserID);
+        $('.playerSelection').empty();
+        $('.playerSelection').append('<button class="rdy">Next Round</button>')
+        console.log('test');
+        if (snap.val().player1.state === 'ready' && snap.val().player2.state === 'ready'){
+            console.log('both players r ready');
+            if(start_game === false){
+                startGame();
+                start_game = true;
+        }
+    }})
+
+}
+
 //will run functions to run game
-//1. check if both players are ready
-//2. when both players are ready will start player selection & timer
 function startGame(){
     $('.rdy').remove();
     var buttons = `<button class='choice'><img href = ""/>rock</button>
                    <button class='choice'><img href = ""/>paper</button>
                    <button class='choice'><img href = ""/>scissors</button>
-                   <div class='youChose'></div>`
+                   `
     $('.playerSelection').append(buttons);
+    //myTimer(15);
+    userRef.on('value', snap =>{
+        if(snap.val().player1.state === 'decided' && snap.val().player2.state === 'decided'){
+        var result = rps(snap.val().player1.move, snap.val().player2.move);
+        displayResult(result);
+        }
+    })
 }
 
 
@@ -195,6 +284,7 @@ $(document).on('click','.rdy', function(){
 //sets your current move
 $(document).on('click','.choice',function(){
     move = $(this).text();
+    state = 'decided';
     updatePlayer(currentUserID);
     $('.youChose').text('You Chose '+ move);
 })

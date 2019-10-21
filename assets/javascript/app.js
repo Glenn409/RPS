@@ -56,8 +56,22 @@ function gameIsFull(name){
 function gameScene(){
 
 }
+
+//directs user to gamepage
 function gameDisplay(){
-    var display = $()
+    var displayBoard = (`<div class=timer>timer Here></div>
+                        <div class='board'>
+                            <div class='player1'>player1 here</div>
+                            <div calss='player2'>player2 here</div>
+                        </div>`);
+
+    var playerSelection = (`<div class='playerSelection'>
+                            <button class='choice'><img href = ""/>rock</button>
+                            <button class='choice'><img href = ""/>paper</button>
+                            <button class='choice'><img href = ""/>scissors</button>
+                            </div>`)
+    $('.enterGame').empty();
+    $('.enterGame').append(displayBoard, playerSelection);
 }
 //will run functions to run game
 //1. check if both players are ready
@@ -83,6 +97,7 @@ $(document).on('click','.submit',function(){
     } else {
         var user = createPlayer(userName,'','none','ready');
         userRef.push(user);
+        gameDisplay();
         // startGame();
     }
 })

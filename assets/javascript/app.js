@@ -10,14 +10,22 @@ var firebaseConfig = {
     measurementId: "G-3Z4BTYGHF5"
   };
 
-var amountOfPlayers = 0;
+
   // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 var userRef = database.ref('users');
+var currentUserID;
 
+//
+function getPlayerID(){
+    userRef.once('value',snap =>{
+        var num = snap.numChildren();
+        currentUserID = Object.keys(snap.val())[num - 1];
+        console.log('player created with the ID of : ' + currentUserID);
+        })
+    }
 
-// database.ref().push(users);
  //removes start and transitions into entering name
 function enterName(){
     $('.enterGame').empty();
@@ -30,6 +38,7 @@ function enterName(){
 //function to create a player;
 function createPlayer(name,msg,move,state){
     player = {
+        // ID: id,
         name: name,
         msg: msg,
         move: move,
@@ -77,7 +86,6 @@ function gameDisplay(){
 //1. check if both players are ready
 //2. when both players are ready will start player selection & timer
 function startGame(){
-
 }
 
 
@@ -95,10 +103,11 @@ $(document).on('click','.submit',function(){
         console.log('lobby is full');
         gameIsFull(userName);
     } else {
-        var user = createPlayer(userName,'','none','ready');
+        var user = createPlayer(userName,'','none','notready');
         userRef.push(user);
+        getPlayerID();
         gameDisplay();
-        // startGame();
+        startGame();
     }
 })
 //try again button when lobby is currently full
@@ -107,6 +116,17 @@ $(document).on('click','.tryAgain',function(){
 })
 
 userRef.on('value', snap => {
-    console.log(snap.numChildren());
-    console.log(snap.val());
+
+})
+
+// database.ref().on('value', snap =>{
+//     if(isLobbyFull()){
+//         console.log('lobby is full')
+//     } else {
+//         console.log('waiting on players to join');
+//     }
+// })
+database.ref().on('value',snap =>{
+
+   
 })

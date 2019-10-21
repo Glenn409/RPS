@@ -21,3 +21,9 @@ button{
     margin-left:auto;
     margin-right:auto;
 }
+.board {
+    padding-top:30px;
+    padding-bottom:30px;
+    display:flex;
+    justify-content: space-around;
+}

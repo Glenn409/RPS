@@ -196,7 +196,7 @@ function displayResult(result){
         $('.player1Choice').text(snap.val().player1.move);
         $('.player2Choice').text(snap.val().player2.move);
         if(result === 'draw'){
-            $('.winner').append('<div>Match was a Draw!</div>');
+            $('.winner').text('Match was a Draw!');
         } else if(snap.val().player1.move === result){
            if(currentUserID === 'player1'){
            }
@@ -210,20 +210,21 @@ function displayResult(result){
         updatePlayer(currentUserID);
         $('.playerSelection').empty();
         $('.playerSelection').append('<button class="rdy">Next Round</button>')
-        console.log('test');
-        if (snap.val().player1.state === 'ready' && snap.val().player2.state === 'ready'){
-            console.log('both players r ready');
-            if(start_game === false){
-                startGame();
-                start_game = true;
-        }
-    }})
+        start_game = false;
+        // if (snap.val().player1.state === 'ready' && snap.val().player2.state === 'ready'){
+        //     console.log('both players r ready');
+        //     if(start_game === false){
+        //         startGame();
+        //         start_game = true;
+        // }
+    })}
 
-}
+
 
 //will run functions to run game
 function startGame(){
     $('.rdy').remove();
+    $('.playerSelection').empty();
     var buttons = `<button class='choice'><img href = ""/>rock</button>
                    <button class='choice'><img href = ""/>paper</button>
                    <button class='choice'><img href = ""/>scissors</button>
@@ -267,6 +268,7 @@ $(document).on('click','.tryAgain',function(){
 
 //changes players state to rdy if both r rdy games starts
 $(document).on('click','.rdy', function(){
+    console.log('rdy clicked');
     state = 'ready';
     $('.rdy').text('You are Ready!');
     updatePlayer(currentUserID);

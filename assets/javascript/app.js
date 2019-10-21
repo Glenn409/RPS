@@ -246,6 +246,7 @@ $('.start').on('click',function(){
 
 //submits user into database if not full
 $(document).on('click','.submit',function(){
+    $('.winner').text('Ready Up!');
     name = $('#nameInput').val().trim();
     var inactiveSpot = isLobbyFull();
 
@@ -262,6 +263,7 @@ $(document).on('click','.submit',function(){
 //try again button when lobby is currently full
 $(document).on('click','.tryAgain',function(){
     enterName();
+ 
 })
 
 //changes players state to rdy if both r rdy games starts
@@ -273,7 +275,7 @@ $(document).on('click','.rdy', function(){
         if (snap.val().player1.state === 'ready' && snap.val().player2.state === 'ready'){
             $('.player1Choice').text('');
             $('.player2Choice').text('');
-            $('.winner').text('');
+            $('.winner').text('Pick a Move!');
             if(start_game === false){
                 startGame(3);
                 start_game = true;

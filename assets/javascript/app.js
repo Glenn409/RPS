@@ -24,6 +24,7 @@ var msg = '';
 var name = '';
 var state = '';
 
+
 var start_game = false;
 // var currentUserInfo = database.ref(`/users/${currentUserID}`);
 function getPlayerID(){
@@ -191,17 +192,14 @@ function rps(input1,input2){
 
 function displayResult(result){
     userRef.once('value', snap =>{
+        
         $('.player1Choice').text(snap.val().player1.move);
         $('.player2Choice').text(snap.val().player2.move);
         if(result === 'draw'){
             $('.winner').text('Match was a Draw!');
         } else if(snap.val().player1.move === result){
-           if(currentUserID === 'player1'){
-           }
             $('.winner').text(`Player 1 Wins!`)
         } else {
-            if(currentUserID === 'player2'){
-            }
             $('.winner').text(`Player 2 Wins!`)
         }
         state = 'notready';
@@ -209,13 +207,9 @@ function displayResult(result){
         $('.playerSelection').empty();
         $('.playerSelection').append('<button class="rdy">Next Round</button>')
         start_game = false;
-        // if (snap.val().player1.state === 'ready' && snap.val().player2.state === 'ready'){
-        //     console.log('both players r ready');
-        //     if(start_game === false){
-        //         startGame();
-        //         start_game = true;
-        // }
-    })}
+    })
+ 
+}
 
 
 

@@ -74,7 +74,7 @@ button:hover{
     margin:auto;
     padding-top:10px;
     padding-bottom:10px;
-    width:50%;
+    width:60%;
     background-color:#0197ab86;
     margin-top:100px;
     margin-bottom:25px;
@@ -87,6 +87,9 @@ button:hover{
 }
 .youChose {
     padding-top:20px;
+}
+.p1points,.p2points{
+    font-size:30px;
 }
 #nameInput{
     margin:auto;
